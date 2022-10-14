@@ -15,7 +15,7 @@ namespace SG.Models.MongoDb
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        public string lastSyncId { get; set; } = null!;
+        public int lastSyncId { get; set; }
 
 
     }

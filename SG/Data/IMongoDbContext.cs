@@ -5,6 +5,6 @@ namespace SG.Data
 {
     public interface IMongoDbContext
     {
-        IMongoDatabase getDatabase();
+        IMongoDatabase GetDatabase();
     }
 }

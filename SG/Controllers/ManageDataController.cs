@@ -21,9 +21,9 @@ namespace SG.Controllers
 
         [HttpGet]
         [Route("api/customers")]
-        public async Task<IActionResult> fetchCustomerRecords()
+        public async Task<IActionResult> FetchCustomerRecords()
         {
-            var list = await manageDataService.retrieveData();
+            var list = await manageDataService.RetrieveCustomerData();
             return Ok(list);
         }
     }

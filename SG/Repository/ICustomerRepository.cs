@@ -8,6 +8,6 @@ namespace SG.Repository
 {
     public interface ICustomerRepository
     {
-        public Task<IEnumerable<Customer>> getCustomers();
+        public Task<IEnumerable<Customer>> GetCustomersByLastSyncId(int lastSyncId);
     }
 }

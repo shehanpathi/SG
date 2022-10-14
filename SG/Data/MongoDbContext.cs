@@ -19,7 +19,7 @@ namespace SG.Data
             this.mongoDBSettings = mongoDBSettings;
         }
 
-        public IMongoDatabase getDatabase()
+        public IMongoDatabase GetDatabase()
         {
             MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionString);
             return client.GetDatabase(mongoDBSettings.Value.DatabaseName);

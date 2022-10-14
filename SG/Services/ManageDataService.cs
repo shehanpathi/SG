@@ -19,11 +19,13 @@ namespace SG.Services
             this.customerRepository = customerRepository;
         }
 
-        public async Task<IEnumerable<Customer>> retrieveData()
+        public async Task<IEnumerable<Customer>> RetrieveCustomerData()
         {
-            var customerList = await customerRepository.getCustomers();
-            var lastCustomerId = customerList.LastOrDefault().customerid.ToString();
-            await dataSyncRepository.CreateAsync(new DataSync() { lastSyncId = lastCustomerId });
+            var lastSyncId = await dataSyncRepository.GetLastSyncId();
+            var customerList = await customerRepository.GetCustomersByLastSyncId(lastSyncId);
+            var lastCustomerId = customerList.LastOrDefault().customerid;
+            await dataSyncRepository.DropLastSync();
+            await dataSyncRepository.CreateLastSyncData(new DataSync() { lastSyncId = lastCustomerId });
             return customerList;
 
         }

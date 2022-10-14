@@ -10,31 +10,33 @@ namespace SG.Repository
 {
     public class DataSyncRepository : IDataSyncRepository
     {
-
+        private const string COLLECTION_NAME = "LastDataSync";
         private readonly IMongoCollection<DataSync> _dataSyncCollection;
 
         public DataSyncRepository(IMongoDbContext mongoDbContext)
         {
-            _dataSyncCollection = mongoDbContext.getDatabase().GetCollection<DataSync>("LastDataSync");
+            _dataSyncCollection = mongoDbContext.GetDatabase().GetCollection<DataSync>(COLLECTION_NAME);
         }
 
-        public async Task<List<DataSync>> GetAsync()
+        public async Task<int> GetLastSyncId()
         {
-            return await _dataSyncCollection.Find(new BsonDocument()).ToListAsync();
+            var lastSyncData = await _dataSyncCollection.Find(new BsonDocument()).FirstOrDefaultAsync();
+            return lastSyncData is null ? 0 : lastSyncData.lastSyncId;
         }
-        public async Task CreateAsync(DataSync dataSync)
+        public async Task CreateLastSyncData(DataSync dataSync)
         {
+
             await _dataSyncCollection.InsertOneAsync(dataSync);
             return;
         }
 
-        public async Task AddToPlaylistAsync(string id, string movieId)
+        public async Task DropLastSync()
         {
-            FilterDefinition<DataSync> filter = Builders<DataSync>.Filter.Eq("Id", id);
-            UpdateDefinition<DataSync> update = Builders<DataSync>.Update.AddToSet<string>("movieIds", movieId);
-            await _dataSyncCollection.UpdateOneAsync(filter, update);
+            await _dataSyncCollection.Database.DropCollectionAsync(COLLECTION_NAME);
             return;
         }
+
+        
     }
 
 }
