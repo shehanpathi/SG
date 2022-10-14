@@ -12,9 +12,9 @@ namespace SG.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private readonly DapperContext _context;
+        private readonly IDapperContext _context;
 
-        public CustomerRepository(DapperContext dapperContext)
+        public CustomerRepository(IDapperContext dapperContext)
         {
             _context = dapperContext;
         }
