@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MySqlConnector;
+using SG.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +9,21 @@ using System.Threading.Tasks;
 namespace SG.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class ManageDataController : Controller
     {
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        private readonly ICustomerRepository customerRepository;
+
+        public ManageDataController(ICustomerRepository customerRepository)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            this.customerRepository = customerRepository;
+        }
+
+        [HttpGet]
+        [Route("api/customers")]
+        public async Task<IActionResult> fetchCustomerRecords()
+        {
+            var list = await customerRepository.getCustomers();
+            return Ok(list);
         }
     }
 }
