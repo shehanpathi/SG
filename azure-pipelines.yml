@@ -14,21 +14,25 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: Nuget Restore
   inputs:
     command: 'restore'
     projects: '**/SG-Models.csproj'
     feedsToUse: 'select'
 - task: DotNetCoreCLI@2
+  displayName: Nuget Build
   inputs:
     command: 'build'
     projects: '**/SG-Models.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 - task: DotNetCoreCLI@2
+  displayName: Nuget Package
   inputs:
     command: 'pack'
     packagesToPack: '**/SG-Models.csproj'
     versioningScheme: 'off'
 - task: DotNetCoreCLI@2
+  displayName: Nuget Push
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
