@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SG.Data
 {
-    public class DapperContext
+    public class DapperContext : IDapperContext
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
