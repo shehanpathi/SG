@@ -30,7 +30,7 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/SG-Models.csproj'
-    versioningScheme: 'off'
+    versioningScheme: 'byBuildNumber'
 - task: DotNetCoreCLI@2
   displayName: Nuget Push
   inputs:
