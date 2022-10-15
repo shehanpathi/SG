@@ -11,6 +11,10 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  major: '1'
+  minor: '0'
+  revision: $[counter(variables['minor'], 1)] # This will get reset every time minor gets bumped.
+  nugetVersion: '$(major).$(minor).$(revision)'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -30,7 +34,8 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/SG-Models.csproj'
-    versioningScheme: 'byBuildNumber'
+    versionEnvVar: 'nugetVersion'
+    versioningScheme: 'byEnvVar'
 - task: DotNetCoreCLI@2
   displayName: Nuget Push
   inputs:
@@ -38,3 +43,5 @@ steps:
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '2ae24e3e-b0fc-404f-a126-9910e4607375/b0b926d8-63d1-4ea0-96fd-84e1a31c8ead'
+
+
