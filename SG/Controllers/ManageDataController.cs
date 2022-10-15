@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using SG.Repository;
 using SG.Services;
@@ -23,8 +24,16 @@ namespace SG.Controllers
         [Route("api/customers")]
         public async Task<IActionResult> FetchCustomerRecords()
         {
-            var list = await manageDataService.RetrieveCustomerData();
-            return Ok(list);
+            try
+            {
+                var list = await manageDataService.RetrieveCustomerData();
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

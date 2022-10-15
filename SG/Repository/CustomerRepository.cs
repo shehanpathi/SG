@@ -36,6 +36,7 @@ namespace SG.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return Enumerable.Empty<Customer>();
             }
 

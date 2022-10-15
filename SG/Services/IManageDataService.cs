@@ -6,6 +6,6 @@ namespace SG.Services
 {
     public interface IManageDataService
     {
-        Task<IEnumerable<Customer>> RetrieveCustomerData();
+        Task<byte[]> RetrieveCustomerData();
     }
 }

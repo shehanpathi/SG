@@ -1,8 +1,10 @@
-﻿using SG.Models.MongoDb;
+﻿using ProtoBuf;
+using SG.Models.MongoDb;
 using SG.Repository;
 using SG_Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,15 +21,21 @@ namespace SG.Services
             this.customerRepository = customerRepository;
         }
 
-        public async Task<IEnumerable<Customer>> RetrieveCustomerData()
+        public async Task<byte[]> RetrieveCustomerData()
         {
             var lastSyncId = await dataSyncRepository.GetLastSyncId();
             var customerList = await customerRepository.GetCustomersByLastSyncId(lastSyncId);
-            var lastCustomerId = customerList.LastOrDefault().customerid;
-            await dataSyncRepository.DropLastSync();
-            await dataSyncRepository.CreateLastSyncData(new DataSync() { lastSyncId = lastCustomerId });
-            return customerList;
 
+            if(customerList.Count() > 0)
+            {
+                var lastCustomerId = customerList.LastOrDefault().customerid;
+                await dataSyncRepository.DropLastSync();
+                await dataSyncRepository.CreateLastSyncData(new DataSync() { lastSyncId = lastCustomerId });
+                return ProtoBuff.ProtoSerialize(customerList);
+            }
+
+            return new byte[0];
+            
         }
 
     }
