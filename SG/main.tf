@@ -38,6 +38,7 @@ resource "azurerm_mysql_flexible_server" "sg-mysql-server" {
   administrator_password = "admin@123"
   sku_name               = "B_Standard_B1s"
   zone                   = "1"
+  version                = "8.0.21"
 }
 
 resource "azurerm_mysql_flexible_database" "sg-mysql-db" {
